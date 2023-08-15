@@ -1,8 +1,14 @@
 <template>
   <router-view />
+  <loading-overlay :status="commonStore.loading"/>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCommonStore } from "@/store/common";
+import LoadingOverlay from "@/components/Share/LoadingOverlay.vue";
+const commonStore = useCommonStore();
+// provide()
+</script>
 
 <style scoped>
 .logo {

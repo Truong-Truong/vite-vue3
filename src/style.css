@@ -26,9 +26,13 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+/*  place-items: center;*/
   min-width: 320px;
   min-height: 100vh;
+  overscroll-behavior-y: none;
+}
+#app {
+  width: 100%;
 }
 
 h1 {
@@ -63,7 +67,7 @@ button:focus-visible {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+/*  text-align: center;*/
 }
 
 @media (prefers-color-scheme: light) {
@@ -77,4 +81,13 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.ml-icon {
+  margin-right:2px;
+  font-size: smaller;
+}
+
+.text-note {
+  font-size: 12px;
 }

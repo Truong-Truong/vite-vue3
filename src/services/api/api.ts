@@ -1,23 +1,23 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { HttpStatusCode } from '../api/types';
+import axios, { AxiosRequestConfig } from "axios";
+import { HttpStatusCode } from "../api/types";
 
-const baseRoot = ``;
+const baseRoot = import.meta.env.VITE_BASE_URL_API;
 
-const baseURL = `${baseRoot}/api`;
+const baseURL = `${baseRoot}`;
 
 const apiClient = axios.create({
   baseURL,
-  withCredentials: true,
-  responseType: 'json',
+  withCredentials: false,
+  responseType: "json",
   timeout: 600000,
 });
 const apiClientDownload = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 const defaultHeaders = {
-  'Content-Type': 'application/json',
+  "Content-Type": "application/json",
 };
 
 const defaultConfig = async (): Promise<AxiosRequestConfig> => {
@@ -43,10 +43,7 @@ const mergeConfig = async (
   return { ..._defaultConfig, ...config, headers };
 };
 
-const requestErrorHandler = (
-  err?: any,
-  skipAlert = false
-): Promise<any> | void => {
+const requestErrorHandler = (err?: any): Promise<any> | void => {
   const errorStatusCode = err?.response?.status;
   if (errorStatusCode == HttpStatusCode.FORBIDDEN) {
     // redirectLogin();
@@ -94,7 +91,7 @@ export async function deleteRequest(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<any> {
-  const data = config && config.data ? config.data : '';
+  const data = config && config.data ? config.data : "";
   const _config = await mergeConfig({ ...config, data });
   return apiClient
     .delete(`${url}`, _config)
@@ -109,24 +106,24 @@ export async function downloadFile(
 ): Promise<AxiosRequestConfig> {
   const _config = await mergeConfig({
     ...config,
-    responseType: 'blob',
+    responseType: "blob",
   });
   return apiClientDownload
     .get(`${url}`, _config)
     .then((res) => {
       const downloadUrl = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = downloadUrl;
-      link.setAttribute('download', 'file.zip'); // any other extension
+      link.setAttribute("download", "file.zip"); // any other extension
       document.body.appendChild(link);
       link.click();
       link.remove();
     })
-    .catch((err) => requestErrorHandler(err, true));
+    .catch((err) => requestErrorHandler(err));
 }
 
 export function newTab(url: string, isBaseRoot: boolean = true) {
-  window.open(`${isBaseRoot ? baseRoot : baseURL}/${url}`, '_blank');
+  window.open(`${isBaseRoot ? baseRoot : baseURL}/${url}`, "_blank");
   return;
 }
 export function currentTab(url: string, isBaseRoot: boolean = true) {
